@@ -7,18 +7,32 @@ export const roomTypeDefs = gql`
 
   type Room {
     id: ID!
-    roomNumbers: String!
-    name: String!
+    roomNumber: String!
     type: String!
     pricePerNight: Float!
     capacity: Int!
     isAvailable: Boolean!
     images: [RoomImages]
+    reviews: [String]
     createdAt: String
     updatedAt: String
   }
 
+  input roomInput {
+    roomNumber: String!
+    type: String!
+    pricePerNight: Float!
+    capacity: Int!
+    isAvailable: Boolean!
+    images: [String]
+    reviews: [String]
+  }
+
   type Query {
-    getAllRooms: String
+    getAllRooms: [Room]
+  }
+
+  type Mutation {
+    createNewRoom(roomInput: roomInput!): Room
   }
 `;
