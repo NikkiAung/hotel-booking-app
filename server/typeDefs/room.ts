@@ -11,8 +11,6 @@ export const roomTypeDefs = gql`
   }
 
   type Query {
-  }
-  type Mutation {
-    
+    getAllRooms: String
   }
 `;
