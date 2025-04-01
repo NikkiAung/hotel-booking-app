@@ -1,6 +1,10 @@
-import { getAllRooms, getRoomById } from "../../controllers/room";
+import {
+  getAllRooms,
+  getRoomById,
+  createNewRoom,
+  updateRoom,
+} from "../../controllers/room";
 import { Room } from "../../types/room";
-import { createNewRoom } from "../../controllers/room";
 
 export const roomResolvers = {
   Query: {
@@ -11,5 +15,9 @@ export const roomResolvers = {
   Mutation: {
     createNewRoom: async (_: any, { roomInput }: { roomInput: Room }) =>
       await createNewRoom(roomInput),
+    updateRoom: async (
+      _: any,
+      { roomId, roomInput }: { roomId: string; roomInput: Room }
+    ) => await updateRoom(roomId, roomInput),
   },
 };
