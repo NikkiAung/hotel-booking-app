@@ -27,3 +27,13 @@ export const updateRoom = async (roomId: string, roomInput: RoomType) => {
   await room.set(roomInput).save();
   return "Room is updated.";
 };
+
+export const deleteRoom = async (roomId: string) => {
+  const room = await Room.findById(roomId);
+  if (!room) {
+    throw new Error("Room not found");
+  }
+
+  await room.deleteOne();
+  return "Room is deleted.";
+};
