@@ -29,6 +29,10 @@ const roomSchema = new mongoose.Schema(
       },
     ],
     reviews: [String],
+    location: {
+      type: String,
+      required: [true, "Please enter roomLocation."],
+    },
   },
   {
     timestamps: true,
