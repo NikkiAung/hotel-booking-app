@@ -13,9 +13,12 @@
   "dependencies": {
     "@apollo/server": "^4.11.3",
     "@graphql-tools/schema": "^10.0.23",
+    "@types/jsonwebtoken": "^9.0.9",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "graphql-tag": "^2.12.6",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.1"
   },
   "devDependencies": {

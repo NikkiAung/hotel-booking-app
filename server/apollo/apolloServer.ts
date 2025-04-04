@@ -1,7 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { makeExecutableSchema } from "@graphql-tools/schema";
-import { Application, json } from "express";
+import { Application, json, Request, Response } from "express";
 import { roomTypeDefs } from "../graphql/typeDefs/room";
 import { roomResolvers } from "../graphql/resolvers/room";
 import cors from "cors";
@@ -25,6 +25,10 @@ export const startApolloServer = async (app: Application) => {
     "/graphql",
     cors({ credentials: true, origin: ["http://localhost:5173"] }),
     json(),
-    expressMiddleware(appoloServer)
+    expressMiddleware(appoloServer, {
+      context: async ({ req, res }: { req: Request; res: Response }) => {
+        return { req, res };
+      },
+    })
   );
 };
