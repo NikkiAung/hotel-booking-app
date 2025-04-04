@@ -14,4 +14,20 @@ export const userTypeDefs = gql`
     createdAt: String!
     updatedAt: String!
   }
+  input UserInput {
+    name: String!
+    email: String!
+    password: String!
+    role: [String]
+  }
+  type Mutation {
+    register(userInput: UserInput): User
+  }
 `;
+
+// export type UserInput = {
+//     name: string;
+//     email: string;
+//     password: string;
+//     role?: string[];
+//   };
