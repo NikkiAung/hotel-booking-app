@@ -8,19 +8,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Link } from "react-router";
 
 type RoomCardProps = {
   room: Room;
 };
 const RoomCard = ({ room }: RoomCardProps) => {
   return (
-    <div className="">
+    <Link to={`/room/${room.id}`}>
       <img
         src={room.images[0].url}
         alt="Room Image"
         className="rounded-lg aspect-video"
       />
       <div>
+        <h2 className="text-lg font-bold mt-1">{room.title}</h2>
         <MapPin className="inline w-5 h-5 text-gray-400 mr-1" />{" "}
         <span className="text-sm font-medium text-gray-400">
           {room.location}
@@ -32,8 +34,7 @@ const RoomCard = ({ room }: RoomCardProps) => {
         </span>
       </div>
       <p className="font-bold text-xl">$ {room.pricePerNight}</p>
-      <span className="text-xs text-gray-400">price per night</span>
-    </div>
+    </Link>
   );
 };
 

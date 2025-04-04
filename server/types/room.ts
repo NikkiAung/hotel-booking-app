@@ -1,4 +1,6 @@
 export type Room = {
+  title: string;
+  description: string;
   roomNumber: string;
   type: string;
   pricePerNight: number;
