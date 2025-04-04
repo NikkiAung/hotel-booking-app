@@ -9,17 +9,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link } from "react-router";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 type RoomCardProps = {
   room: Room;
 };
 const RoomCard = ({ room }: RoomCardProps) => {
+  const [loading, setLoading] = useState(true);
   return (
     <Link to={`/room/${room.id}`}>
+      {loading && (
+        <div className="w-full aspect-video bg-gray-300 flex items-center justify-center rounded-lg animate-pulse">
+          <p>loading</p>
+        </div>
+      )}
       <img
         src={room.images[0].url}
         alt="Room Image"
-        className="rounded-lg aspect-video"
+        className={cn("rounded-lg aspect-video", loading ? "hidden" : "block")}
+        onLoad={() => setLoading(false)}
+        onError={() => setLoading(false)}
       />
       <div>
         <h2 className="text-lg font-bold mt-1">{room.title}</h2>
