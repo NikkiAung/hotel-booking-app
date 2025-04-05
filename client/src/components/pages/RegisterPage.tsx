@@ -23,9 +23,10 @@ import { registerSchema } from "@/schema/auth";
 import { useMutation } from "@apollo/client";
 import { REGISTER_MUTATION } from "@/graphql/mutations/auth";
 import { toast } from "sonner";
-import { redirect } from "react-router";
+import { useNavigate } from "react-router";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -38,7 +39,7 @@ const RegisterPage = () => {
   const [register, { loading, error }] = useMutation(REGISTER_MUTATION, {
     onCompleted() {
       toast.success("Registeration successful");
-      return redirect("/login");
+      return navigate("/login");
     },
   });
 
@@ -56,6 +57,7 @@ const RegisterPage = () => {
       });
     } catch (error: any) {
       console.log(error);
+      // form.reset();
       toast.error(error.message.split(":")[1]);
     }
   }
@@ -110,7 +112,7 @@ const RegisterPage = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="******" {...field} />
+                      <Input type="password" placeholder="******" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
