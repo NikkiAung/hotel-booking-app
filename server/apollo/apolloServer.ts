@@ -7,6 +7,8 @@ import { roomResolvers } from "../graphql/resolvers/room";
 import cors from "cors";
 import { userTypeDefs } from "../graphql/typeDefs/user";
 import { userResolvers } from "../graphql/resolvers/user";
+import { applyMiddleware } from "graphql-middleware";
+import { permissions } from "../middleware/permission";
 
 export const startApolloServer = async (app: Application) => {
   const typeDefs = [roomTypeDefs, userTypeDefs];
@@ -17,7 +19,9 @@ export const startApolloServer = async (app: Application) => {
     resolvers,
   });
 
-  const appoloServer = new ApolloServer({ schema });
+  const schemaWithShield = applyMiddleware(schema, permissions);
+
+  const appoloServer = new ApolloServer({ schema: schemaWithShield });
 
   await appoloServer.start();
 
