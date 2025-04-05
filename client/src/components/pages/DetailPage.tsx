@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/carousel";
 
 import { BadgeCheck, CircleX, Hash, House, MapPin, Users } from "lucide-react";
+import NotFound from "../common/NotFound";
 
 const DetailPage = () => {
   const params = useParams<{ id: string }>();
@@ -20,6 +21,7 @@ const DetailPage = () => {
     variables: { roomId: params.id },
   });
 
+  console.log("Error", error);
   const room: Room = data?.getRoomById;
 
   const items = room
@@ -38,6 +40,9 @@ const DetailPage = () => {
         },
       ]
     : [];
+  if (error?.graphQLErrors[0].extensions?.code === "NOT_FOUND") {
+    return <NotFound />;
+  }
   return (
     <main className="layout">
       {loading ? (

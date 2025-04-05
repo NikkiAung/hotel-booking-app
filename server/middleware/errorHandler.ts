@@ -1,10 +1,11 @@
+import { NotFoundError } from "../util/not-found";
 export default (controllerFunction: Function) =>
   (...args: unknown[]) => {
     return Promise.resolve(controllerFunction(...args)).catch((error) => {
       console.log(error.name);
       if (error.name === "CastError") {
         const message = `Data not found. Field : ${error.path}`;
-        throw message;
+        throw new NotFoundError(message);
       }
 
       if (error.name === "ValidationError") {
@@ -12,7 +13,7 @@ export default (controllerFunction: Function) =>
           (err: any) => err.message
         );
         const errorMessage = message.join(", ");
-        throw errorMessage;
+        throw new NotFoundError(errorMessage);
       }
       throw error;
     });
