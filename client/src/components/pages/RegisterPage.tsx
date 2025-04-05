@@ -20,6 +20,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "@/schema/auth";
+import { useMutation } from "@apollo/client";
+import { REGISTER_MUTATION } from "@/graphql/mutations/auth";
+import { toast } from "sonner";
+import { redirect } from "react-router";
 
 const RegisterPage = () => {
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -31,10 +35,29 @@ const RegisterPage = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof registerSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const [register, { loading, error }] = useMutation(REGISTER_MUTATION, {
+    onCompleted() {
+      toast.success("Registeration successful");
+      return redirect("/login");
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof registerSchema>) {
+    const userInput = {
+      email: values.email,
+      name: values.name,
+      password: values.password,
+    };
+    try {
+      await register({
+        variables: {
+          userInput,
+        },
+      });
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.message.split(":")[1]);
+    }
   }
   return (
     <section className="layout w-1/4 mt-10">
@@ -50,7 +73,7 @@ const RegisterPage = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
-                name="email"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Username</FormLabel>
@@ -66,15 +89,15 @@ const RegisterPage = () => {
               />
               <FormField
                 control={form.control}
-                name="name"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Gmail</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input placeholder="exampleBagan@gmail.com" {...field} />
                     </FormControl>
                     <FormDescription>
-                      This is your public display name.
+                      This is your primary email address.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -89,14 +112,13 @@ const RegisterPage = () => {
                     <FormControl>
                       <Input placeholder="******" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <Button type="submit" disabled={loading}>
+                Register
+              </Button>
             </form>
           </Form>
         </CardContent>

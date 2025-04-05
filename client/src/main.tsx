@@ -9,6 +9,7 @@ import HomePage from "./components/pages/HomePage.tsx";
 import DetailPage from "./components/pages/DetailPage.tsx";
 import RegisterPage from "./components/pages/RegisterPage.tsx";
 import LoginPage from "./components/pages/Login.tsx";
+import { Toaster } from "@/components/ui/sonner";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ApolloProvider client={client}>
       <RouterProvider router={router} />
+      <Toaster richColors position="top-right" />
     </ApolloProvider>
   </StrictMode>
 );

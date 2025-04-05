@@ -15,6 +15,11 @@ export default (controllerFunction: Function) =>
         const errorMessage = message.join(", ");
         throw new NotFoundError(errorMessage);
       }
+
+      if (error.name === "MongoServerError") {
+        const message = "Email already exists";
+        throw message;
+      }
       throw error;
     });
   };
