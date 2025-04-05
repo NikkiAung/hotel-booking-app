@@ -7,6 +7,8 @@ import client from "./apollo/apolloClient.ts";
 import Layout from "./components/layout/Layout.tsx";
 import HomePage from "./components/pages/HomePage.tsx";
 import DetailPage from "./components/pages/DetailPage.tsx";
+import RegisterPage from "./components/pages/RegisterPage.tsx";
+import LoginPage from "./components/pages/Login.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ const router = createBrowserRouter([
       {
         path: "/room/:id",
         element: <DetailPage />,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
       },
     ],
   },

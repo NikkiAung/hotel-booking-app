@@ -1,11 +1,3 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Link } from "react-router";
 import { Button } from "../ui/button";
 
@@ -16,20 +8,13 @@ const Header = () => {
         Bagan Hotel
       </Link>
       <div className="space-x-4">
-        <Button>Login</Button>
-        <Button variant={"outline"}>Register</Button>
+        <Button asChild>
+          <Link to="/register">Register</Link>
+        </Button>
+        <Button variant={"outline"} asChild>
+          <Link to="/login">Login</Link>
+        </Button>
       </div>
-      {/* <DropdownMenu>
-        <DropdownMenuTrigger>Profile</DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu> */}
     </nav>
   );
 };
