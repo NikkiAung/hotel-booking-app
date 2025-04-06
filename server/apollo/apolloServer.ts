@@ -8,7 +8,13 @@ import cors from "cors";
 import { userTypeDefs } from "../graphql/typeDefs/user";
 import { userResolvers } from "../graphql/resolvers/user";
 import { applyMiddleware } from "graphql-middleware";
-import { permissions } from "../middleware/permission";
+import { permissions } from "../middleware/permissions";
+import jwt from "jsonwebtoken";
+import { User } from "../models/user";
+
+type JWTPayload = {
+  _id: string;
+};
 
 export const startApolloServer = async (app: Application) => {
   const typeDefs = [roomTypeDefs, userTypeDefs];
@@ -21,7 +27,9 @@ export const startApolloServer = async (app: Application) => {
 
   const schemaWithShield = applyMiddleware(schema, permissions);
 
-  const appoloServer = new ApolloServer({ schema: schemaWithShield });
+  const appoloServer = new ApolloServer({
+    schema: schemaWithShield,
+  });
 
   await appoloServer.start();
 
@@ -31,7 +39,21 @@ export const startApolloServer = async (app: Application) => {
     json(),
     expressMiddleware(appoloServer, {
       context: async ({ req, res }: { req: Request; res: Response }) => {
-        return { req, res };
+        let user = null;
+        const token = req.cookies?.token;
+        try {
+          const decodedToken = jwt.verify(
+            token,
+            process.env.JWT_SECRET!
+          ) as JWTPayload;
+          user = await User.findById(decodedToken._id);
+          if (!user) {
+            throw new Error("User not found");
+          }
+        } catch (error) {
+          throw new Error("Invalid or expired token");
+        }
+        return { req, res, user };
       },
     })
   );

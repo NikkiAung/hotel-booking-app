@@ -20,6 +20,9 @@ export const userTypeDefs = gql`
     password: String!
     role: [String]
   }
+  type Query {
+    currentUser: User
+  }
   type Mutation {
     register(userInput: UserInput): User
     login(email: String!, password: String!): User

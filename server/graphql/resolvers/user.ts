@@ -2,7 +2,11 @@ import { UserInput } from "../../types/user";
 import { login, register } from "../../controllers/user";
 import { Response } from "express";
 export const userResolvers = {
-  Query: {},
+  Query: {
+    currentUser: async (_: any, __: any, { user }: { user: any }) => {
+      return user;
+    },
+  },
   Mutation: {
     register: async (_: any, { userInput }: { userInput: UserInput }) =>
       await register(userInput),
