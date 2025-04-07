@@ -51,7 +51,8 @@ export const startApolloServer = async (app: Application) => {
             throw new Error("User not found");
           }
         } catch (error) {
-          throw new Error("Invalid or expired token");
+          console.log(error);
+          // throw new Error("Invalid or expired token");
         }
         return { req, res, user };
       },
