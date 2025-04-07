@@ -10,6 +10,9 @@ import DetailPage from "./components/pages/DetailPage.tsx";
 import RegisterPage from "./components/pages/RegisterPage.tsx";
 import LoginPage from "./components/pages/Login.tsx";
 import { Toaster } from "@/components/ui/sonner";
+import ProfilePage from "./components/pages/ProfilePage.tsx";
+import DashboardPage from "./components/pages/DashboardPage.tsx";
+import ProtectedPage from "./components/pages/ProtectedPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +34,22 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage />,
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedPage>
+            <ProfilePage />
+          </ProtectedPage>
+        ),
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <ProtectedPage roles={["admin"]}>
+            <DashboardPage />
+          </ProtectedPage>
+        ),
       },
     ],
   },
