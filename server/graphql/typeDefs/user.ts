@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 export const userTypeDefs = gql`
   type Avatar {
-    url: String!
+    url: String
     public_id: String!
   }
   type User {
