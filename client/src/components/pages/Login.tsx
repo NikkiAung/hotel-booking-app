@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import { isAuthenticatedVar } from "@/apollo/apollo-vars";
 import { useEffect } from "react";
+import { CURRENT_USER } from "@/graphql/querues/user";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const LoginPage = () => {
       toast.success("Login successful");
       return navigate("/");
     },
-    refetchQueries: ["CURRENT_USER"],
+    refetchQueries: [CURRENT_USER],
   });
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {

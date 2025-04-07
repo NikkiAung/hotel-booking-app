@@ -1,7 +1,7 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Button } from "../ui/button";
-import { useQuery } from "@apollo/client";
-import { CURRENT_USER } from "@/graphql/querues/user";
+import { useLazyQuery, useQuery } from "@apollo/client";
+import { CURRENT_USER, LOG_OUT } from "@/graphql/querues/user";
 import {
   isAuthenticatedVar,
   userInfoVar,
@@ -18,6 +18,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Header = () => {
+  const navigate = useNavigate();
   const { data, loading } = useQuery(CURRENT_USER, {
     onCompleted: (data) => {
       userInfoVar(data.currentUser);
@@ -30,7 +31,14 @@ const Header = () => {
       isLoadingVar(false);
     },
   });
-
+  const [logout] = useLazyQuery(LOG_OUT, {
+    onCompleted: () => {
+      navigate(0);
+    },
+  });
+  const logOutHandler = () => {
+    logout();
+  };
   return (
     <nav className="flex items-center justify-between layout py-10">
       <Link to="/" className="text-4xl font-extrabold">
@@ -58,7 +66,9 @@ const Header = () => {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Log out</DropdownMenuItem>
+              <DropdownMenuItem onClick={logOutHandler}>
+                <span className="text-red-400">Log out</span>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (

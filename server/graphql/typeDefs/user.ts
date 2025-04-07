@@ -22,6 +22,7 @@ export const userTypeDefs = gql`
   }
   type Query {
     currentUser: User
+    logout: Boolean
   }
   type Mutation {
     register(userInput: UserInput): User
