@@ -4,7 +4,6 @@ import { Room } from "@/types/Room";
 import RoomCard from "@/home/RoomCard";
 const HomePage = () => {
   const { data, loading, error } = useQuery(GET_ALL_ROOMS);
-  console.log(data);
   return (
     <main className="layout">
       <div>

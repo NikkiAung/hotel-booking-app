@@ -6,10 +6,6 @@ export const CURRENT_USER = gql`
       id
       name
       email
-      avatar {
-        url
-        public_id
-      }
       role
       createdAt
       updatedAt

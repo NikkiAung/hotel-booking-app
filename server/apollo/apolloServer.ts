@@ -13,7 +13,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user";
 
 type JWTPayload = {
-  _id: string;
+  id: string;
 };
 
 export const startApolloServer = async (app: Application) => {
@@ -46,7 +46,7 @@ export const startApolloServer = async (app: Application) => {
             token,
             process.env.JWT_SECRET!
           ) as JWTPayload;
-          user = await User.findById(decodedToken._id);
+          user = await User.findById(decodedToken.id);
           if (!user) {
             throw new Error("User not found");
           }

@@ -20,13 +20,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "@/schema/auth";
-import { useMutation } from "@apollo/client";
+import { useMutation, useReactiveVar } from "@apollo/client";
 import { REGISTER_MUTATION } from "@/graphql/mutations/auth";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import { isAuthenticatedVar } from "@/apollo/apollo-vars";
+import { useEffect } from "react";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const isAuthenticated = useReactiveVar(isAuthenticatedVar);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {

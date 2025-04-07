@@ -20,13 +20,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { loginSchema } from "@/schema/auth";
-import { useMutation } from "@apollo/client";
+import { useMutation, useReactiveVar } from "@apollo/client";
 import { LOGIN_MUTATION } from "@/graphql/mutations/auth";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import { isAuthenticatedVar } from "@/apollo/apollo-vars";
+import { useEffect } from "react";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const isAuthenticated = useReactiveVar(isAuthenticatedVar);
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -40,6 +43,7 @@ const LoginPage = () => {
       toast.success("Login successful");
       return navigate("/");
     },
+    refetchQueries: ["CURRENT_USER"],
   });
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
@@ -61,6 +65,12 @@ const LoginPage = () => {
       );
     }
   }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
   return (
     <section className="layout w-1/4 mt-10">
       <Card>
